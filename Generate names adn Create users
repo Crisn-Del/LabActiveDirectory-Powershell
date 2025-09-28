@@ -1,0 +1,69 @@
+# ----- Edit these Variables for your own Use Case ----- #
+$PASSWORD_FOR_USERS   = "Password1"
+$NUMBER_OF_ACCOUNTS_TO_CREATE = 10000
+$OU = "OU=_EMPLOYEES,DC=example,DC=com"   # <- REPLACE with your real OU
+# ------------------------------------------------------ #
+
+Import-Module ActiveDirectory -ErrorAction Stop
+
+function Generate-Random-Name {
+    $consonants = @('b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','z')
+    $vowels     = @('a','e','i','o','u','y')
+    # name length between 3 and 7 (inclusive)
+    $nameLength = Get-Random -Minimum 3 -Maximum 8
+
+    $name = ""
+    for ($i = 0; $i -lt $nameLength; $i++) {
+        if ($i % 2 -eq 0) {
+            $name += (Get-Random -InputObject $consonants)
+        } else {
+            $name += (Get-Random -InputObject $vowels)
+        }
+    }
+
+    # Capitalize first letter
+    return ($name.Substring(0,1).ToUpper() + $name.Substring(1))
+}
+
+# Use a for loop that runs exactly N times
+for ($i = 1; $i -le $NUMBER_OF_ACCOUNTS_TO_CREATE; $i++) {
+    $firstName = Generate-Random-Name
+    $lastName  = Generate-Random-Name
+
+    # Build a samAccountName (make sure it's <= 20 chars)
+    $sam = ($firstName.Substring(0,1) + $lastName).ToLower()
+    if ($sam.Length -gt 20) { $sam = $sam.Substring(0,20) }
+
+    # Avoid collisions: if sam exists, append a numeric suffix
+    $suffix = 1
+    while (Get-ADUser -Filter { SamAccountName -eq $sam } -ErrorAction SilentlyContinue) {
+        $candidate = ($sam + $suffix.ToString())
+        if ($candidate.Length -gt 20) {
+            # trim base to keep total length <=20
+            $baseLen = 20 - $suffix.ToString().Length
+            $candidate = $sam.Substring(0, [Math]::Min($baseLen, $sam.Length)) + $suffix.ToString()
+        }
+        if (-not (Get-ADUser -Filter { SamAccountName -eq $candidate } -ErrorAction SilentlyContinue)) {
+            $sam = $candidate
+            break
+        }
+        $suffix++
+    }
+
+    $securePass = ConvertTo-SecureString $PASSWORD_FOR_USERS -AsPlainText -Force
+
+    $displayName = "$firstName $lastName"
+
+    Write-Host "Creating user: $sam ($displayName)" -ForegroundColor Cyan
+
+    New-ADUser -SamAccountName $sam `
+               -AccountPassword $securePass `
+               -GivenName $firstName `
+               -Surname $lastName `
+               -Name $displayName `
+               -DisplayName $displayName `
+               -EmployeeID $sam `
+               -PasswordNeverExpires $true `
+               -Path $OU `
+               -Enabled $true
+}
