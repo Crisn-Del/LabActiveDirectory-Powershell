@@ -27,3 +27,9 @@
 Topology <br/>
 <img src="https://imgur.com/cyGH177.png" height="80%" width="80%" alt="Topology"/>
 <br />
+<p align="center">
+1. Installled VMs(Windows server2019 (DC) and Windows 10(Client) <br/>
+<img width="80%" height="80%" alt="WINDOWS SERVER 2019" src="https://github.com/user-attachments/assets/cfd00143-7a38-4fe1-aff8-8214d63a037b" />
+<img width="80%" height="80%" alt="image" src="https://github.com/user-attachments/assets/1a5eb2f9-b5c3-4e54-8478-d6a5fea591ed" />
+
+
