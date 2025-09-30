@@ -31,5 +31,14 @@ Topology <br/>
 1. Installled VMs(Windows server2019 (DC) and Windows 10(Client) <br/>
 <img width="80%" height="80%" alt="WINDOWS SERVER 2019" src="https://github.com/user-attachments/assets/cfd00143-7a38-4fe1-aff8-8214d63a037b" />
 <img width="80%" height="80%" alt="image" src="https://github.com/user-attachments/assets/1a5eb2f9-b5c3-4e54-8478-d6a5fea591ed" />
+<p align="center">
+2.Server Manager – AD DS, DNS, DHCP Installed <br/>
+<img width="80%" height="80%" alt="ad ds dns dchp installed" src="https://github.com/user-attachments/assets/fef53456-b6cc-4264-ab43-b9170326b3fd" />
+ <p align="center">
+3.PowerShell Script Running (1000 user creation) <br/>
+<img width="80%" height="80%" alt="image" src="https://github.com/user-attachments/assets/62794ee5-6a4d-495f-8ae5-92e875b43abb" />
+<p align="center">
+4.Windows 10 Login Screen with Domain Account <br/>
+<img width="1742" height="902" alt="image" src="https://github.com/user-attachments/assets/ded7d234-de38-4196-89d4-e2cb028c9bf8" />
 
 
